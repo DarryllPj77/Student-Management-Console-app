@@ -42,62 +42,39 @@
             StudentService studentService = new StudentService();
             #endregion
 
+            #region -- Registration of Students --
+            // Using StudentService for Registration
+            studentService.AddStudent(student1);
+            studentService.AddStudent(student2);
+            studentService.AddStudent(student3);
+            #endregion
+
             #region -- Operations / Data Retrieval
             // retrieve the students 
             List<Student> registeredStudents = studentService.GetAllStudents(); // 
             #endregion
 
             #region -- Display Outputs --
-            // Instantiate two Students
-            // Simple not good for many data
-            /*Console.WriteLine(student1.StudentID);
-            Console.WriteLine(student1.Name);
-            Console.WriteLine(student1.Course);
-            Console.WriteLine("========================");
-            Console.WriteLine(student2.StudentID);
-            Console.WriteLine(student2.Name);
-            Console.WriteLine(student2.Course);*/
 
-            // Manual Registration
-            //student1.AddGrade(90);
-            //student1.AddGrade(76);
-            //student1.AddGrade(87);
+            DisplayStudentReport(registeredStudents);
 
-            //student2.AddGrade(76);
-            //student2.AddGrade(76);
-            //student2.AddGrade(76);
+            CheckingStudentById(studentService, 2); // Check student if existing by ID
 
-            // Using StudentService for Registration
 
-            studentService.AddStudent(student1);
-            studentService.AddStudent(student2);
-            studentService.AddStudent(student3);
+            RemoveStudentById(studentService, 5); // Remove student by ID
+            DisplayStudentReport(registeredStudents); // Display Student Report
 
-            foreach (var registeredstudent in registeredStudents)
-            {
-                DisplayStudent(registeredstudent);
-            }
+            UpdateStudentInformation(student1, "Darryll J Pajaganas", "BSIT");
 
-            Console.WriteLine("================================");
-            Console.WriteLine("Checking student by Id");
-            Console.WriteLine("================================");
-            Student? student = studentService.GetStudentByID(2);
+            DisplayStudentReport(registeredStudents); // checking if the student 1 updated
 
-            if(student != null)
-            {
-                DisplayStudent(student);
-            }
-            else
-            {
-                Console.WriteLine("Student not found!");
-            }
-            
+            //student1.Name = "New Name";
 
-            //DisplayStudent(student1);
-            //Console.WriteLine();
-            //DisplayStudent(student2);
             #endregion
         }
+
+
+
         #region -- Functions --
         static void DisplayStudent(Student student)
         {
@@ -110,11 +87,69 @@
             Console.WriteLine(student.Course);
 
             double average = student.CalculateAverage();
-            bool isPassed = average >= 75;
+            bool isPassed = student.IsPassed();
 
             Console.WriteLine($"Average: {average:F2}");
             Console.WriteLine($"Status: {(isPassed ? "PASSED" : "FAILED")}");
 
+        }
+
+        // Function fo displaying Student report 
+        static void DisplayStudentReport(List<Student>  registeredStudents)
+        {
+            foreach (var student in registeredStudents)
+            {
+                DisplayStudent(student);
+            }
+        }
+
+        static void CheckingStudentById(StudentService studentService, int studentId)
+        {
+            Console.WriteLine("================================");
+            Console.WriteLine("Checking student by Id");
+            Console.WriteLine("================================");
+            Student? student = studentService.GetStudentByID(studentId);
+
+            if (student != null)
+            {
+                DisplayStudent(student);
+            }
+            else
+            {
+                Console.WriteLine("Student not found!");
+            }
+        }
+
+        static void RemoveStudentById(StudentService studentService, int studentID)
+        {
+            Console.WriteLine("================================");
+            Console.WriteLine("Remove student by Id");
+            Console.WriteLine("================================");
+
+            int idToRemove = studentID;
+
+            bool isStudentRemoved = studentService.RemoveStudent(idToRemove);
+
+            Console.WriteLine($"Removing Student ID:{idToRemove}");
+
+            if (isStudentRemoved)
+            {
+                Console.WriteLine("Student remove successfully!");
+            }
+            else
+            {
+                Console.WriteLine("Student not found!");
+            }
+        }
+
+        static void UpdateStudentInformation(Student student, string name,  string course)
+        {
+            Console.WriteLine("================================");
+            Console.WriteLine("Updated Student Information");
+            Console.WriteLine("================================");
+
+            student.UpdateStudentInfo(name, course);
+            
         }
 
         #endregion

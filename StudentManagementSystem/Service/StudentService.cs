@@ -42,6 +42,18 @@ namespace StudentManagementSystem
 
         }
 
+        public bool RemoveStudent(int studentID)
+        {
+            Student? student = GetStudentByID(studentID);
+            if(student == null) // checking if student is not existing
+            {
+                return false;
+            }
+
+            return _students.Remove(student);
+            
+        }
+
         #endregion
     }
 }

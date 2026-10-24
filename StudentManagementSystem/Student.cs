@@ -7,8 +7,8 @@
         // A member that provides a flexible mechanism to read, write, or compute the value of a private field. 
         // Properties use get and set blocks (accessors). 
         public int StudentID { get; private set; } = 0;
-        public string Name { get; set; } = "";
-        public string Course { get; set; } = "";
+        public string Name { get; private set; } = ""; // updated change setter to private
+        public string Course { get; private set; } = ""; // updated change setter to private
         public List<int> Grades { get; private set; } = new List<int>(); // collection for the grades
 
         #endregion
@@ -72,6 +72,21 @@
                 return false;
             }
         }
+
+        public void UpdateStudentInfo(string name, string course)
+        {
+            if(string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(course))
+            {
+                Console.WriteLine("Update failed: Name and Course cannot be empty or just spaces!");
+                return;
+            }
+
+            Name = name;
+            Course = course;
+
+            Console.WriteLine("Updated Successfully!");
+        }
+
         #endregion
     }
 }
