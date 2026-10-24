@@ -5,38 +5,27 @@
         static void Main(string[] args)
         {
             #region -- Object Instantiation -- 
-            Student student1 = new Student(1, "Darryll", "BSCS") 
-            {
-                Grades =
-                {
-                    90,
-                    76,
-                    87
-                }
-            };
-
-            Student student2 = new Student(2, "Beji", "BSIT")
-            {
-                Grades =
-                {
-                    76,
-                    76,
-                    76
-                }
-            };
-
-            Student student3 = new Student(1, "Celeine", "BSCE")
-            {
-                Grades =
-                {
-                    98,
-                    94,
-                    96
-                }
-            };
-
+            Student student1 = new Student(1, "Darryll", "BSCS");
+            Student student2 = new Student(2, "Beji", "BSIT");
+            Student student3 = new Student(1, "Celeine", "BSCE");
 
             #endregion
+
+            #region -- AddGrade() Method --
+            // Using AddGrade() fot students
+            student1.AddGrade(90);
+            student1.AddGrade(76);
+            student1.AddGrade(87);
+
+            student2.AddGrade(76);
+            student2.AddGrade(76);
+            student2.AddGrade(76);
+
+            student3.AddGrade(98);
+            student3.AddGrade(94);
+            student3.AddGrade(96);
+            #endregion
+
 
             #region -- Application Manager --
             StudentService studentService = new StudentService();
@@ -51,7 +40,7 @@
 
             #region -- Operations / Data Retrieval
             // retrieve the students 
-            List<Student> registeredStudents = studentService.GetAllStudents(); // 
+            IReadOnlyList<Student> registeredStudents = studentService.GetAllStudents(); // updated for encapsulation 
             #endregion
 
             #region -- Display Outputs --
@@ -95,7 +84,7 @@
         }
 
         // Function fo displaying Student report 
-        static void DisplayStudentReport(List<Student>  registeredStudents)
+        static void DisplayStudentReport(IReadOnlyList<Student>  registeredStudents)
         {
             foreach (var student in registeredStudents)
             {

@@ -9,7 +9,10 @@
         public int StudentID { get; private set; } = 0;
         public string Name { get; private set; } = ""; // updated change setter to private
         public string Course { get; private set; } = ""; // updated change setter to private
-        public List<int> Grades { get; private set; } = new List<int>(); // collection for the grades
+        //public List<int> Grades { get; private set; } = new List<int>(); // collection for the grades
+
+        private List<int> _grades = new List<int>();
+        public IReadOnlyList<int> Grades => _grades.AsReadOnly();
 
         #endregion
 
@@ -33,22 +36,22 @@
             else
             {
                 Console.WriteLine("Grade added!");
-                Grades.Add(grade);
+                _grades.Add(grade);
             }
         }
 
         public double CalculateAverage()
         {
             double average;
-            double totalSum = Grades.Sum();
+            double totalSum = _grades.Sum();
             double elementsCount = 0;
-            if (Grades.Count() == 0)
+            if (_grades.Count() == 0)
             {
                 return 0.0;
             }
             else
             {
-                elementsCount = Grades.Count();
+                elementsCount = _grades.Count();
             }
             
             return average = (totalSum / elementsCount);
@@ -58,19 +61,13 @@
         {
             double calculatedAverage = CalculateAverage();
 
-            if(calculatedAverage == 0)
+            if(_grades.Count == 0)
             {
                 Console.WriteLine("No grades, Not pass!");
                 return false;
             }
-            else if(calculatedAverage >= 75)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+
+            return CalculateAverage() >= 75;
         }
 
         public void UpdateStudentInfo(string name, string course)

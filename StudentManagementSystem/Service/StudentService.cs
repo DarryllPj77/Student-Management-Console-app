@@ -24,9 +24,9 @@ namespace StudentManagementSystem
             _students.Add(student);
         }
 
-        public List<Student> GetAllStudents()
+        public IReadOnlyList<Student> GetAllStudents()
         {
-            return _students;
+            return _students.AsReadOnly();
         }
 
         public Student? GetStudentByID(int studentId)
