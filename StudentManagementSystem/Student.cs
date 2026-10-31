@@ -1,4 +1,6 @@
-﻿namespace StudentManagementSystem
+﻿using StudentManagementSystem.Validator;
+
+namespace StudentManagementSystem
 {
     public class Student
     {
@@ -28,15 +30,15 @@
         #region -- Methods --
         public void AddGrade(int grade)
         {
-            if((grade < 0) || (grade > 100))
-            {
-                Console.WriteLine("Only accepts grades from 0 - 100!");
-                return;
-            }
-            else
+            if(InputValidator.ValidateGrade(grade))
             {
                 Console.WriteLine("Grade added!");
                 _grades.Add(grade);
+            }
+            else
+            {
+                Console.WriteLine("Only accepts grades from 70 - 100!");
+                return;
             }
         }
 

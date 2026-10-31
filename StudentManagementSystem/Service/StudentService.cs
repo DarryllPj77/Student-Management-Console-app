@@ -1,6 +1,6 @@
 ﻿using System.Reflection.Metadata.Ecma335;
 
-namespace StudentManagementSystem
+namespace StudentManagementSystem.Service
 {
     public class StudentService
     {
@@ -12,16 +12,17 @@ namespace StudentManagementSystem
 
         #region -- Method --
 
-        public void AddStudent(Student student)
+        public bool AddStudent(Student student)
         {
             Student? existingStudent = GetStudentByID(student.StudentID); // Check if the ID already exists or hold nothing
             // To prevent duplicates
             if (existingStudent != null)
             {
-               Console.WriteLine("Student ID already exist!");
-               return;
+               //Console.WriteLine("Student ID already exist!"); no need for this
+               return false;
             }
             _students.Add(student);
+            return true;
         }
 
         public IReadOnlyList<Student> GetAllStudents()
@@ -52,6 +53,15 @@ namespace StudentManagementSystem
 
             return _students.Remove(student);
             
+        }
+
+        public bool HasRegisteredStudents()
+        {
+            if(_students.Count > 0) // if student counts collection greater than 0 = empty list / no counts
+            {
+                return true;
+            }
+            return false;
         }
 
         #endregion

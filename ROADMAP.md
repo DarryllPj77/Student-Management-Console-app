@@ -2,7 +2,7 @@
 
 **Project:** C# / .NET Console Application  
 **Focus:** Object-Oriented Programming, Encapsulation, SOLID Principles, and Clean Code  
-**Current Progress:** Step 11 completed — Step 12 next
+**Current Progress:** Step 12.1–12.8 completed — Step 12.9 next
 
 This project is being developed gradually to build a complete terminal-based Student Management System while applying OOP principles and clean architecture.
 
@@ -43,19 +43,19 @@ This project is being developed gradually to build a complete terminal-based Stu
 
 ## Phase 3 — Interactive Console Application
 
-### Next Phase
+### In Progress
 
-| Step | Implementation | Description |
+| Step | Implementation | Status |
 |---|---|---|
-| 12.1 | Console menu | Implement `DisplayMenu()`, loops, and `switch` statements |
-| 12.2 | Register student | Accept ID, name, and course from the terminal |
-| 12.3 | View students | Display all registered students |
-| 12.4 | Search student | Search using a user-provided ID |
-| 12.5 | Add grade | Select a student and enter a grade |
-| 12.6 | Update student | Update name and course using an ID |
-| 12.7 | Remove student | Remove a student using an ID |
-| 12.8 | Input validation | Handle invalid input using `TryParse()` |
-| 12.9 | Menu improvements | Add screen clearing, navigation, and confirmation prompts |
+| 12.1 | Implement `DisplayMenu()`, loops, and `switch` statements | Completed |
+| 12.2 | Accept student ID, name, and course from the terminal | Completed |
+| 12.3 | Display all registered students | Completed |
+| 12.4 | Search using a user-provided ID | Completed |
+| 12.5 | Select a student and enter a grade | Completed |
+| 12.6 | Update name and course using an ID | Completed |
+| 12.7 | Remove a student using an ID | Completed |
+| 12.8 | Validate input with `TryParse()` and `InputValidator` | Completed |
+| 12.9 | Add screen clearing, navigation, and confirmation prompts | Next |
 
 **Expected result:** A fully interactive terminal application without hardcoded student operations.
 
@@ -136,6 +136,8 @@ StudentManagementSystem/
 	├── Student.cs
 	├── Service/
 	│   └── StudentService.cs
+	├── Validator/
+	│   └── InputValidator.cs
 	└── StudentManagementSystem.csproj
 ```
 
@@ -143,13 +145,13 @@ StudentManagementSystem/
 
 ## Development Progress Tracker
 
-**Overall Progress:** 11 / 38 milestones
+**Overall Progress:** 19 / 38 milestones
 
 | Phase | Progress |
 |---|---:|
 | Phase 1 — OOP Fundamentals | 5 / 5 |
 | Phase 2 — Student Management | 6 / 6 |
-| Phase 3 — Interactive Console | 0 / 9 |
+| Phase 3 — Interactive Console | 8 / 9 |
 | Phase 4 — Clean Code and Architecture | 0 / 6 |
 | Phase 5 — Advanced OOP Practice | 0 / 6 |
 | Phase 6 — Testing and Final Improvements | 0 / 6 |

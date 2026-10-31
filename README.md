@@ -21,14 +21,16 @@ The system is developed incrementally, starting with fundamental OOP concepts an
 - Student name and course updates
 - Reusable student reporting methods
 - Encapsulation using private setters and read-only collections
+- Interactive menu-driven console workflow
+- Terminal input for registration, searching, grades, updates, and removal
+- Reusable validation for student IDs, names, courses, and grades
+- Empty-list and missing-student handling
 
-### Planned Features
+### Next Improvements
 
-- Interactive console menu
-- Student registration through terminal input
-- Interactive searching, updating, and removal
-- User input validation and error handling
-- Further OOP and architecture improvements
+- Menu navigation improvements, confirmation prompts, and screen clearing
+- Separation of console presentation from `Program.cs`
+- Interfaces, dependency injection, and automated tests
 
 ## Step 11 — Encapsulation Improvements
 
@@ -183,6 +185,26 @@ static void DisplayStudentReport(IReadOnlyList<Student> registeredStudents)
 - Maintained compatibility with the encapsulated student collection.
 - Preserved the reusable reporting functionality.
 
+## Step 12 — Interactive Console Workflow
+
+The application now runs through a continuous terminal menu instead of predefined operations.
+
+### Completed in Step 12.1–12.8
+
+- Added a loop-based menu with `switch` routing and an explicit exit option.
+- Added terminal registration for student ID, name, and course.
+- Added interactive viewing, searching, grade entry, updating, and removal.
+- Changed `StudentService.AddStudent()` to return a success result for duplicate-ID feedback.
+- Added `StudentService.HasRegisteredStudents()` for empty-state checks.
+- Added `InputValidator` for positive IDs, required text lengths, and the accepted grade range.
+- Added retry loops for invalid numeric and text input.
+- Verified the complete workflow through a scripted console smoke test.
+
+### Remaining in Step 12.9
+
+- Improve navigation with screen clearing and continue prompts.
+- Add confirmation before destructive actions such as student removal.
+
 ## OOP Concepts Implemented
 
 | Concept | Implementation |
@@ -212,15 +234,16 @@ static void DisplayStudentReport(IReadOnlyList<Student> registeredStudents)
 | 9 | Student removal | Completed |
 | 10 | Student information updates | Completed |
 | 11 | Encapsulation and read-only collections | Completed |
-| 12 | Interactive console menu | Planned |
+| 12.1–12.8 | Interactive console operations and validation | Completed |
+| 12.9 | Menu navigation and confirmation improvements | Next |
 
 ## Development Status
 
-**Work in Progress — Step 11 Completed**
+**Work in Progress — Step 12.1–12.8 Completed**
 
-The application currently uses predefined student data in `Program.cs` for testing registration, grade management, searching, updating, removal, and reporting.
+The application now starts with an empty in-memory `StudentService` and accepts student operations through the terminal menu.
 
-The next milestone is **Step 12 — Interactive Console Menu**.
+The next milestone is **Step 12.9 — Menu Improvements**, followed by the Phase 4 refactor that moves console presentation out of `Program.cs`.
 
 Student data is currently stored in memory and is not persisted between application runs.
 
@@ -248,6 +271,8 @@ StudentManagementSystem/
 ├── Student.cs
 ├── Service/
 │   └── StudentService.cs
+├── Validator/
+│   └── InputValidator.cs
 └── StudentManagementSystem.csproj
 ```
 
