@@ -1,258 +1,126 @@
 # Student Management System
 
-A terminal-based Student Management System developed using **C# and .NET** to practice and strengthen Object-Oriented Programming (OOP) principles through hands-on software development.
+A terminal-based Student Management System built with **C# and .NET 10**. The project is a hands-on learning exercise for Object-Oriented Programming, SOLID principles, encapsulation, validation, clean code, and incremental architecture refactoring.
 
 ## Project Overview
 
-This project is an ongoing learning initiative focused on designing a maintainable, object-oriented application without a graphical user interface or database.
+The application stores student records in memory and provides an interactive console menu for registration, searching, viewing, grading, updating, and removal. It has no database or graphical user interface, and data is not persisted between runs.
 
-The system is developed incrementally, starting with fundamental OOP concepts and progressing toward structured application architecture, input validation, encapsulation, and student record management.
+The console workflow has been separated from the application entry point. `Program.cs` creates the shared `StudentService` and starts `StudentConsoleUI`; the UI class owns terminal input, output, menu navigation, and operation workflows.
 
-## Features
+## Current Implemented Features
 
-### Currently Implemented
-
-- Student registration and record retrieval
-- Student grade management and average calculation
-- Pass/fail evaluation
-- Search students by ID
-- Duplicate student ID prevention
-- Student record removal
+- Student registration through the terminal
+- Unique positive student ID enforcement
+- Search by student ID
+- Display of all registered students
+- Addition of three validated grades during each grade-entry operation
+- Average calculation and pass/fail evaluation
 - Student name and course updates
-- Reusable student reporting methods
-- Encapsulation using private setters and read-only collections
-- Interactive menu-driven console workflow
-- Terminal input for registration, searching, grades, updates, and removal
-- Reusable validation for student IDs, names, courses, and grades
-- Empty-list and missing-student handling
+- Student removal with Y/N confirmation
+- Menu redisplay and a “Press enter to continue” pause after operations
+- Reusable console headers, input methods, and display methods
+- Empty-collection and missing-student handling
+- Registered-student count feedback after registration and removal
+- Encapsulation through private setters and read-only collection exposure
 
-### Next Improvements
+## Current Validation Rules
 
-- Menu navigation improvements, confirmation prompts, and screen clearing
-- Separation of console presentation from `Program.cs`
-- Interfaces, dependency injection, and automated tests
-
-## Step 11 — Encapsulation Improvements
-
-This milestone focuses on protecting student information and collections from unintended modifications.
-
-### 11.1 — Student Properties
-
-**Previous Syntax:**
-
-```csharp
-public int StudentID { get; private set; } = 0;
-public string Name { get; set; } = "";
-public string Course { get; set; } = "";
-```
-
-**Updated Syntax:**
-
-```csharp
-public int StudentID { get; private set; } = 0;
-public string Name { get; private set; } = "";
-public string Course { get; private set; } = "";
-```
-
-**Changes:**
-- Changed `Name` and `Course` setters from `public` to `private`.
-- Prevented external classes from directly modifying student information.
-- Student information must now be updated through `UpdateStudentInfo()`.
-
-### 11.2 — Grades Collection
-
-**Previous Syntax:**
-
-```csharp
-public List<int> Grades { get; private set; } = new List<int>();
-```
-
-**Updated Syntax:**
-
-```csharp
-private List<int> _grades = new List<int>();
-
-public IReadOnlyList<int> Grades => _grades.AsReadOnly();
-```
-
-**Changes:**
-- Introduced a private `_grades` collection.
-- Exposed grades using `IReadOnlyList<int>`.
-- Prevented external classes from directly adding or removing grades through the public property.
-- Updated `AddGrade()` and `CalculateAverage()` to use `_grades`.
-
-### 11.3 — Grade Initialization
-
-**Previous Syntax:**
-
-```csharp
-Student student1 = new Student(1, "Darryll", "BSCS")
-{
-    Grades = { 90, 76, 87 }
-};
-```
-
-**Updated Syntax:**
-
-```csharp
-Student student1 = new Student(1, "Darryll", "BSCS");
-
-student1.AddGrade(90);
-student1.AddGrade(76);
-student1.AddGrade(87);
-```
-
-**Changes:**
-- Removed direct collection initialization.
-- Grades are now added through `AddGrade()`.
-- Each grade is validated before being stored.
-
-### 11.4 — StudentService Collection Encapsulation
-
-**Previous Syntax:**
-
-```csharp
-private List<Student> _students = new List<Student>();
-
-public List<Student> GetAllStudents()
-{
-    return _students;
-}
-```
-
-**Updated Syntax:**
-
-```csharp
-private List<Student> _students = new List<Student>();
-
-public IReadOnlyList<Student> GetAllStudents()
-{
-    return _students.AsReadOnly();
-}
-```
-
-**Changes:**
-- Changed the return type from `List<Student>` to `IReadOnlyList<Student>`.
-- Prevented external classes from directly adding or removing students through the returned collection.
-- Student registration and removal remain controlled through `StudentService` methods.
-
-### 11.5 — Program.cs Collection Retrieval
-
-**Previous Syntax:**
-
-```csharp
-List<Student> registeredStudents = studentService.GetAllStudents();
-```
-
-**Updated Syntax:**
-
-```csharp
-IReadOnlyList<Student> registeredStudents = studentService.GetAllStudents();
-```
-
-**Changes:**
-- Updated the collection variable to match the service's read-only return type.
-- Preserved student retrieval and iteration functionality.
-
-### 11.6 — Student Report Method
-
-**Previous Syntax:**
-
-```csharp
-static void DisplayStudentReport(List<Student> registeredStudents)
-{
-    foreach (var student in registeredStudents)
-    {
-        DisplayStudent(student);
-    }
-}
-```
-
-**Updated Syntax:**
-
-```csharp
-static void DisplayStudentReport(IReadOnlyList<Student> registeredStudents)
-{
-    foreach (var student in registeredStudents)
-    {
-        DisplayStudent(student);
-    }
-}
-```
-
-**Changes:**
-- Updated the parameter type to `IReadOnlyList<Student>`.
-- Maintained compatibility with the encapsulated student collection.
-- Preserved the reusable reporting functionality.
-
-## Step 12 — Interactive Console Workflow
-
-The application now runs through a continuous terminal menu instead of predefined operations.
-
-### Completed in Step 12.1–12.8
-
-- Added a loop-based menu with `switch` routing and an explicit exit option.
-- Added terminal registration for student ID, name, and course.
-- Added interactive viewing, searching, grade entry, updating, and removal.
-- Changed `StudentService.AddStudent()` to return a success result for duplicate-ID feedback.
-- Added `StudentService.HasRegisteredStudents()` for empty-state checks.
-- Added `InputValidator` for positive IDs, required text lengths, and the accepted grade range.
-- Added retry loops for invalid numeric and text input.
-- Verified the complete workflow through a scripted console smoke test.
-
-### Remaining in Step 12.9
-
-- Improve navigation with screen clearing and continue prompts.
-- Add confirmation before destructive actions such as student removal.
-
-## OOP Concepts Implemented
-
-| Concept | Implementation |
+| Input | Rule |
 |---|---|
-| Classes and Objects | `Student` and `StudentService` |
-| Constructors | Student initialization |
-| Properties | Student ID, name, course, and grades |
-| Encapsulation | Private setters and controlled methods |
-| Access Modifiers | `public` and `private` |
-| Collections | `List<int>` and `List<Student>` |
-| Read-Only Interfaces | `IReadOnlyList<int>` and `IReadOnlyList<Student>` |
-| Methods | Registration, searching, updating, removal, and grade calculations |
-| Nullable Reference Types | `Student?` |
-| Validation | Duplicate IDs, grade ranges, and student information |
-| Object References | Shared student objects across application components |
+| Student ID | Must be a positive integer; IDs must be unique. |
+| Student name | After trimming, must contain 2–70 characters. |
+| Course | After trimming, must contain 3–120 characters. |
+| Grade | Must be an integer from 70–100. |
+| Passing average | Must be 75 or higher. |
+| Empty collections | The application reports when no students are registered before operations that require a student. |
 
-## Development Progress
+Reusable validation is implemented in `Validator/InputValidator.cs`. `StudentConsoleUI` reads and validates console input, `StudentService` prevents duplicate IDs, and `Student.AddGrade()` applies the grade rule before changing the grade collection.
 
-| Step | Milestone | Status |
-|---|---|---|
-| 1–3 | Student class, properties, constructors, and object instantiation | Completed |
-| 4 | Grade management and evaluation | Completed |
-| 5 | Student methods integration | Completed |
-| 6 | StudentService implementation | Completed |
-| 7 | Search students by ID | Completed |
-| 8 | Duplicate student ID prevention | Completed |
-| 9 | Student removal | Completed |
-| 10 | Student information updates | Completed |
-| 11 | Encapsulation and read-only collections | Completed |
-| 12.1–12.8 | Interactive console operations and validation | Completed |
-| 12.9 | Menu navigation and confirmation improvements | Next |
+## Current Architecture
 
-## Development Status
+| Component | Current responsibility |
+|---|---|
+| `Program` | Composition and startup: creates `StudentService` and starts the console UI. |
+| `UI/StudentConsoleUI` | Menu loop, console navigation, prompts, validation flow, operation workflows, and terminal output. |
+| `Service/StudentService` | In-memory student collection, registration, lookup, removal, count, and collection-state queries. |
+| `Student` | Student identity and details, encapsulated grades, average calculation, pass/fail evaluation, and student-information updates. |
+| `Validator/InputValidator` | Reusable student ID, required-text, and grade validation rules. |
 
-**Work in Progress — Step 12.1–12.8 Completed**
+The current UI methods are static and receive `StudentService` as a method parameter. Reviewing static versus instance methods and moving to constructor-based dependency injection is the next milestone; it is not described as implemented yet.
 
-The application now starts with an empty in-memory `StudentService` and accepts student operations through the terminal menu.
+## OOP and Clean-Code Concepts Practiced
 
-The next milestone is **Step 12.9 — Menu Improvements**, followed by the Phase 4 refactor that moves console presentation out of `Program.cs`.
+| Concept | Current application |
+|---|---|
+| Classes and objects | `Student`, `StudentService`, `StudentConsoleUI`, and `InputValidator` separate major responsibilities. |
+| Constructors | `Student` is initialized with an ID, name, and course. |
+| Encapsulation | Student setters are private, grade storage is private, and state changes go through methods. |
+| Collections and generics | Students and grades are stored internally using `List<T>`. |
+| Read-only interfaces | `IReadOnlyList<Student>` and `IReadOnlyList<int>` limit external collection mutation. |
+| Nullable reference types | Student lookup returns `Student?` when a record may not exist. |
+| Reusable methods | Input, display, collection, and validation behavior is expressed through named methods. |
+| Separation of concerns | `Program.cs` no longer contains the interactive console workflow; UI, service, model, and validation concerns are separated. |
 
-Student data is currently stored in memory and is not persisted between application runs.
+This project practices SOLID concepts progressively. It does **not** claim that all SOLID principles have been implemented.
 
-## Requirements
+## Encapsulation Improvements
+
+- `Student.Name` and `Student.Course` use private setters.
+- Grades are stored in the private `_grades` list and exposed through `IReadOnlyList<int>`.
+- `StudentService._students` is private, and `GetAllStudents()` returns `IReadOnlyList<Student>` through `AsReadOnly()`.
+- Grade changes go through `AddGrade()`.
+- Student information changes go through `UpdateStudentInfo()`.
+
+## Reusable Methods
+
+`StudentConsoleUI.cs` currently contains console helpers and workflows including:
+
+- `Header()` and `PauseConsole()`
+- `ReadStudentID()`, `ReadRequiredText()`, and `ReadGrade()`
+- `DisplayStudent()`, `ShowStudentDetails()`, and `DisplayStudentReport()`
+- `CheckStudent()` and `DisplayMenu()`
+- Registration, viewing, searching, grade entry, updating, and removal workflows
+
+`StudentService.cs` currently contains:
+
+- `AddStudent()`
+- `GetAllStudents()`
+- `GetStudentByID()`
+- `RemoveStudent()`
+- `HasRegisteredStudents()`
+- `GetStudentCount()`
+
+Exact, Git-verified refactoring examples are maintained in [SYNTAX_HISTORY.md](SYNTAX_HISTORY.md).
+
+## Project Structure
+
+```text
+StudentManagementSystem/
+├── AGENTS.md
+├── README.md
+├── ROADMAP.md
+├── SYNTAX_HISTORY.md
+├── StudentManagementSystem.slnx
+└── StudentManagementSystem/
+    ├── Program.cs
+    ├── Student.cs
+    ├── Service/
+    │   └── StudentService.cs
+    ├── UI/
+    │   └── StudentConsoleUI.cs
+    ├── Validator/
+    │   └── InputValidator.cs
+    └── StudentManagementSystem.csproj
+```
+
+## Application Requirements
 
 - [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
 - Visual Studio 2026, Visual Studio Code, or another .NET-compatible IDE
+- A terminal capable of running a .NET console application
 
-## Run the Application
+## Running the Project
 
 From the repository root:
 
@@ -261,37 +129,16 @@ dotnet restore .\StudentManagementSystem\StudentManagementSystem.csproj
 dotnet run --project .\StudentManagementSystem\StudentManagementSystem.csproj
 ```
 
-Alternatively, open `StudentManagementSystem.slnx` in Visual Studio.
+Alternatively, open `StudentManagementSystem.slnx` in Visual Studio and run the project.
 
-## Project Structure
+## Current Development Status
 
-```text
-StudentManagementSystem/
-├── Program.cs
-├── Student.cs
-├── Service/
-│   └── StudentService.cs
-├── Validator/
-│   └── InputValidator.cs
-└── StudentManagementSystem.csproj
-```
+**Step 13.6 — Program.cs Refactoring is completed.**
 
-## Learning Objectives
+The console workflow and reusable UI methods have been moved into `StudentConsoleUI`, and `Program.cs` now focuses on creating the service and starting the application. The current architecture remains an in-memory console application.
 
-- Strengthen C# and .NET fundamentals
-- Apply OOP principles through practical development
-- Understand classes, constructors, properties, and methods
-- Practice encapsulation and access modifiers
-- Manage collections using `List<T>` and `IReadOnlyList<T>`
-- Implement reusable methods and validation
-- Improve software architecture and code maintainability
+## Next Milestone
 
-## Future Development
+**Step 13.7 — Static vs. Instance Methods and Constructor-Based Dependency Injection**
 
-The project will continue evolving through interactive console operations, stronger validation, improved separation of responsibilities, and additional object-oriented design practices.
-
-## Development Roadmap
-
-This project follows a structured, milestone-based learning roadmap focused on C# fundamentals, Object-Oriented Programming, clean architecture, and software testing.
-
-See [ROADMAP.md](ROADMAP.md) for the complete development plan and progress.
+This planned step will review the UI method design and how `StudentService` is supplied to `StudentConsoleUI`. It is not implemented yet. Later milestones remain documented in [ROADMAP.md](ROADMAP.md).
